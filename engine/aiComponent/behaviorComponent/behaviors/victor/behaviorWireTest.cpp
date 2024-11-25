@@ -44,6 +44,7 @@ BehaviorWireTest::~BehaviorWireTest()
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 bool BehaviorWireTest::WantsToBeActivatedBehavior() const
 {
+  // We only want this activated upon a test_wire user intent
   auto& uic = GetBehaviorComp<UserIntentComponent>();
   return uic.IsUserIntentPending(USER_INTENT(test_wire));
 }
@@ -66,10 +67,8 @@ void BehaviorWireTest::GetBehaviorJsonKeys(std::set<const char*>& expectedKeys) 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void BehaviorWireTest::OnBehaviorActivated() 
 {
-  PRINT_NAMED_INFO("BehaviorWireTest.OnBehaviorActivated", "BehaviorWireTest has been activated.");
 
   _dVars = DynamicVariables();
-  //auto& uic = GetBehaviorComp<UserIntentComponent>();
 
   // Activate the "test_wire" intent
   UserIntentPtr intentData = SmartActivateUserIntent(USER_INTENT(test_wire));
@@ -79,7 +78,7 @@ void BehaviorWireTest::OnBehaviorActivated()
   }
 
   // Say "Hello World"
-  auto* sayHelloAction = new SayTextAction("Hello World", SayTextAction::AudioTtsProcessingStyle::Unprocessed);
+  auto* sayHelloAction = new SayTextAction("Hello World", SayTextAction::AudioTtsProcessingStyle::Default_Processed);
   DelegateIfInControl(sayHelloAction, [](const ActionResult& result) {
     if (result == ActionResult::SUCCESS) {
       PRINT_NAMED_INFO("BehaviorWireTest.OnBehaviorActivated", "Successfully said 'Hello World'");
