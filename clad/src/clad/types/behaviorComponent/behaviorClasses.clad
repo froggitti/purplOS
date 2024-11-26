@@ -149,6 +149,7 @@ enum uint_8 BehaviorClass {
   InspectCube,
   Keepaway,
   PounceWithProx,
+  SnakeGame,
   PuzzleMaze,
 
   // gateBehaviors
