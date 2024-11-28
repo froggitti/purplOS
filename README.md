@@ -19,7 +19,7 @@ Check the [wiki](https://github.com/kercre123/victor/wiki) for more information 
 
 ```
 cd ~
-git clone --recurse-submodules https://github.com/Switch-modder/Victorware-2.0 -b modder/snake
+git clone --recurse-submodules https://github.com/kercre123/victor -b snowboy
 cd victor
 git lfs install
 git lfs pull
