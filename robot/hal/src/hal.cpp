@@ -371,7 +371,7 @@ Result HAL::Init(const int * shutdownSignal)
     return RESULT_FAIL;
   }
 
-  // use ro.build.target
+  // check ro.build.target
   FILE* f = popen("/usr/bin/getprop ro.build.target", "r");
   if(f != nullptr) {
     char buf[16];
