@@ -57,12 +57,17 @@
 #include <fstream>
 #include <iomanip>
 #include <thread>
+#include <sys/stat.h>
+#include <string>
 
 #ifndef SIMULATOR
 #include <linux/reboot.h>
 #include <sys/reboot.h>
 #endif
 
+// CHANGE THIS TO BE YOUR PROJECT'S NAME AND BRANCH
+const std::string OSProject = "WireOS";
+const std::string OSBranch = "snowboy";
 
 // Log options
 #define LOG_CHANNEL    "FaceInfoScreenManager"
@@ -89,6 +94,15 @@ namespace Vector {
 const Point2f FaceInfoScreenManager::kDefaultTextStartingLoc_pix = {0,10};
 const u32 FaceInfoScreenManager::kDefaultTextSpacing_pix = 11;
 const f32 FaceInfoScreenManager::kDefaultTextScale = 0.4f;
+
+bool isDeployed() {
+    struct stat info;
+    if (stat("/anki-devtools", &info) != 0) {
+        return false;
+    }
+    return S_ISDIR(info.st_mode);
+}
+
 
 namespace {
   // Number of tics that a wheel needs to be moving for before it registers
@@ -243,7 +257,7 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
     ADD_SCREEN(Camera, Kercre123);
   }
 
-  ADD_SCREEN_WITH_TEXT(Kercre123, Main, {"BRANCH: snowboy?"});
+  ADD_SCREEN_WITH_TEXT(Kercre123, Main, {"BRANCH: " + OSBranch});
 
 
   // ========== Screen Customization ========= 
@@ -1280,15 +1294,16 @@ void FaceInfoScreenManager::DrawMain()
 
   const std::string hwVer    = "HW: "   + std::to_string(Factory::GetEMR()->fields.HW_VER);
 
-  const std::string osVer    = "OS: "   + osstate->GetOSBuildVersion() +
-                                          (FACTORY_TEST ? " (V4)" : "") +
-                                          (osstate->IsInRecoveryMode() ? " U" : "");
+  const std::string osProject    = "OS: " + OSProject;
+
+  // osVer will be sha if deployed build
+  std::string osVer = "VER: " + osstate->GetOSBuildVersion();
 
   const std::string ssid     = "SSID: " + osstate->GetSSID(true);
 
-#if ANKI_DEV_CHEATS
-  const std::string sha      = "SHA: "  + osstate->GetBuildSha();
-#endif
+  if (isDeployed()) {
+    osVer      = "SHA: "  + osstate->GetBuildSha();
+  }
 
   std::string ip             = osstate->GetIPAddress();
   if (ip.empty()) {
@@ -1298,15 +1313,13 @@ void FaceInfoScreenManager::DrawMain()
   // ESN/serialNo and the HW version are drawn on the same line with serialNo default left aligned and
   // HW version right aligned.
   ColoredTextLines lines = { { {serialNo}, {hwVer, NamedColors::WHITE, false} },
-                             {osVer}, 
+                             {osProject},
+                             {osVer},
                              {ssid}, 
 #if FACTORY_TEST
                              {"IP: " + ip},
 #else
                              { {"IP: "}, {ip, (osstate->IsValidIPAddress(ip) ? NamedColors::GREEN : NamedColors::RED)} },
-#endif
-#if ANKI_DEV_CHEATS
-			     {sha},
 #endif
                            };
 
