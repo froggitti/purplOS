@@ -43,9 +43,9 @@ namespace Vector {
 namespace {
 u32 _pin = 123456;
 
-const f32 kRobotNameScale = 0.6f;
+const f32 kRobotNameScale = 0.7f;
 const std::string kURL = "v.pvic.xyz";
-const ColorRGBA   kColor(0.9f, 0.9f, 0.9f, 1.f);
+const ColorRGBA   kColor(0.9f, 0.5f, 0.9f, 1.f);
 
 const char* kShowPinScreenSpriteName = "pairing_icon_key";
 
@@ -243,7 +243,8 @@ void UpdateConnectionFlow(const SwitchboardInterface::SetConnectionStatus& msg,
     break;
     case ConnectionStatus::WAITING_FOR_APP:
     {
-      DrawWaitingForAppScreen(animStreamer);
+      //DrawWaitingForAppScreen(animStreamer);
+      DrawStartPairingScreen(animStreamer);
     }
     break;
     case ConnectionStatus::END_PAIRING:
