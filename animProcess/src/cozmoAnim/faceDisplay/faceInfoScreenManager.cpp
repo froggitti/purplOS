@@ -65,9 +65,11 @@
 #include <sys/reboot.h>
 #endif
 
-// CHANGE THIS TO BE YOUR PROJECT'S NAME AND BRANCH
+// CHANGE THIS TO BE YOUR PROJECT'S STUFF
 const std::string OSProject = "WireOS";
 const std::string OSBranch = "snowboy";
+const std::string Creator = "Built by Wire";
+const std::string CreatorWebsite = "keriganc.com";
 
 // Log options
 #define LOG_CHANNEL    "FaceInfoScreenManager"
@@ -250,14 +252,14 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
   if(IsWhiskey())
   {
     ADD_SCREEN(Camera, ToF);
-    ADD_SCREEN(ToF, Main);    // Last screen cycles back to Main
+    ADD_SCREEN(ToF, BuildInfo);    // Last screen cycles back to Main
   }
   else
   {
-    ADD_SCREEN(Camera, Kercre123);
+    ADD_SCREEN(Camera, BuildInfo);
   }
 
-  ADD_SCREEN_WITH_TEXT(Kercre123, Main, {"BRANCH: " + OSBranch});
+  ADD_SCREEN(BuildInfo, Main);
 
 
   // ========== Screen Customization ========= 
@@ -314,9 +316,9 @@ void FaceInfoScreenManager::Init(Anim::AnimContext* context, Anim::AnimationStre
 
   ADD_MENU_ITEM(Main, "EXIT", None);
 #if ENABLE_SELF_TEST
-  ADD_MENU_ITEM(Main, "SELF TEST", SelfTest);
+  ADD_MENU_ITEM(Main, IsXray() ? "TEST" : "SELF TEST", SelfTest);
 #endif
-  ADD_MENU_ITEM(Main, "CLEAR OUT SOUL", ClearUserData);
+  ADD_MENU_ITEM(Main, IsXray() ? "CLEAR" : "CLEAR OUT SOUL", ClearUserData);
 
   // === Self test screen ===
   ADD_MENU_ITEM(SelfTest, "EXIT", Main);
@@ -1250,6 +1252,9 @@ void FaceInfoScreenManager::Update(const RobotState& state)
     case ScreenName::CameraMotorTest:
       UpdateCameraTestMode(state.timestamp);
       break;
+    case ScreenName::BuildInfo:
+      DrawBuildInfo();
+      break;
     default:
       // Other screens are either updated once when SetScreen() is called
       // or updated by their own draw functions that are called externally
@@ -1461,6 +1466,17 @@ void FaceInfoScreenManager::DrawSensorInfo(const RobotState& state)
   } else {
     DrawTextOnScreen({syscon, cliffs, prox1, prox2, touch, batt, charger, tempC});
   }
+}
+
+void FaceInfoScreenManager::DrawBuildInfo() {
+  auto *osstate = OSState::getInstance();
+  const std::string osProject = "OS: " + OSProject;
+  const std::string branch = "BRANCH: " + OSBranch;
+  const std::string osVer = "VER: " + osstate->GetOSBuildVersion();
+  const std::string sha = "SHA: " + osstate->GetBuildSha();
+  const std::string creator = Creator;
+  const std::string creatorWebsite = CreatorWebsite;
+  DrawTextOnScreen({osProject, branch, osVer, sha, creator, creatorWebsite});
 }
 
 void FaceInfoScreenManager::DrawIMUInfo(const RobotState& state)
