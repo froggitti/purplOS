@@ -243,8 +243,7 @@ void UpdateConnectionFlow(const SwitchboardInterface::SetConnectionStatus& msg,
     break;
     case ConnectionStatus::WAITING_FOR_APP:
     {
-      //DrawWaitingForAppScreen(animStreamer);
-      DrawStartPairingScreen(animStreamer);
+      DrawWaitingForAppScreen(animStreamer);
     }
     break;
     case ConnectionStatus::END_PAIRING:
