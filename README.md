@@ -43,7 +43,7 @@ cd ~/victor
 
 3. It should just work! The output will be in `./_build/vicos/Release/`
 
-## Building (Intel macOS)
+## Building (Intel or ARM64 macOS)
 
  - Prereqs: Make sure you have [brew](https://brew.sh/) installed.
    -  Then: `brew install pyenv git-lfs ccache`
@@ -73,14 +73,22 @@ eval "$(pyenv init -)"
 pyenv shell 2.7.18
 ```
 
+3. Disable security:
 
-3. Run the build script:
+```
+sudo spctl --master-disable
+sudo spctl --global-disable
+```
+- You will have to head to `System Settings -> Security & Privacy -> Allow applications from` and select "Anywhere".
+
+
+4. Run the build script:
 ```
 cd ~/victor
 ./wire/build.sh
 ```
 
-3. It should just work! The output will be in `./_build/vicos/Release/`
+5. It should just work! The output will be in `./_build/vicos/Release/`
 
 ## Deploying
 
