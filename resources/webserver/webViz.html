@@ -207,6 +207,23 @@
   <div id="container">
 
     <ul class="tabs">
+      <style>
+        .tabs .tab-link {
+    background-color: #800080 !important; /* Purple */
+    color: white !important; /* White text for contrast */
+    border: 1px solid #660066; /* Darker purple border */
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.tabs .tab-link.current {
+    background-color: #9900CC !important; /* Brighter purple for active tab */
+}
+
+      </style>
       <li class="tab-link current" data-tab="tab-overview">Overview</li>
     </ul>
 
