@@ -1,6 +1,6 @@
 [submodule "EXTERNALS"]
 	path = EXTERNALS
-	url = https://github.com/froggitti/EXTERNALS/tree/997cad797c2b0d7fa333368721df859452b6cfd2
+	url = https://github.com/froggitti/EXTERNALS
 [submodule "ota/wire-os"]
 	path = ota/wire-os
 	url = https://github.com/kercre123/wire-os
