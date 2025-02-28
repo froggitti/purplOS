@@ -53,7 +53,7 @@ cd ~/purplOS
 ```
 cd ~
 git clone --recurse-submodules https://github.com/froggitti/purplOS -b main
-cd victor
+cd purplOS
 git lfs install
 git lfs pull
 ```
@@ -92,7 +92,7 @@ cd ~/purplOS
 
 ## Deploying
 
-1. Echo your robot's IP address to robot_ip.txt (in the root of the victor repo):
+1. Echo your robot's IP address to robot_ip.txt (in the root of the repo):
 
 ```
 echo 192.168.1.150 > robot_ip.txt
